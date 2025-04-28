@@ -1,1 +1,3 @@
 rootProject.name = 'stayroom'
+
+include 'base', 'api', 'batch', 'admin', 'business-api'
