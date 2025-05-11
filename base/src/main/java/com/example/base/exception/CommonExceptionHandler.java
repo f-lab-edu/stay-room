@@ -1,7 +1,7 @@
 package com.example.base.exception;
 
 import com.example.base.enums.ErrorType;
-import com.example.dto.CommonResponse;
+import com.example.base.dto.CommonResponse;
 import com.google.common.base.Joiner;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
@@ -23,4 +23,15 @@ public class CommonExceptionHandler {
     return ResponseEntity.status(errorType.getHttpStatus())
             .body(new CommonResponse<>(errorType.getCode(), errorType.getHttpStatus(),errorType.getMessage(), null));
   }
+
+  @ExceptionHandler({jakarta.persistence.OptimisticLockException.class,
+      org.springframework.orm.ObjectOptimisticLockingFailureException.class})
+  public ResponseEntity<CommonResponse<?>> optimisticLockHandler(Exception e) {
+    log.error("낙관적 락 충돌 예외 발생", e);
+    ErrorType errorType = ErrorType.OPTIMISTIC_LOCK_CONFLICT;
+
+    return ResponseEntity.status(errorType.getHttpStatus()).body(new CommonResponse<>(errorType.getCode(),
+        errorType.getHttpStatus(),errorType.getMessage(),null));
+  }
+
 }
