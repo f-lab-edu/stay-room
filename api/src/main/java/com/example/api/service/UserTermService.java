@@ -15,7 +15,7 @@ public class UserTermService {
   private final TermsRepository termsRepository;
 
   public List<ResUserTermDTO> getActiveTermList() {
-    return termsRepository.activeTermList().stream()
+    return termsRepository.activeTermList(null).stream()
         .map(ResUserTermDTO::from)
         .toList();
   }

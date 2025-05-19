@@ -27,8 +27,7 @@ public class CommonExceptionHandler {
   @ExceptionHandler({jakarta.persistence.OptimisticLockException.class,
       org.springframework.orm.ObjectOptimisticLockingFailureException.class})
   public ResponseEntity<CommonResponse<?>> optimisticLockHandler(Exception e) {
-    log.error("낙관적 락 충돌 예외 발생", e);
-    ErrorType errorType = ErrorType.OPTIMISTIC_LOCK_CONFLICT;
+    ErrorType errorType = ErrorType.ADMIN_UPDATE_CONFLICT;
 
     return ResponseEntity.status(errorType.getHttpStatus()).body(new CommonResponse<>(errorType.getCode(),
         errorType.getHttpStatus(),errorType.getMessage(),null));
