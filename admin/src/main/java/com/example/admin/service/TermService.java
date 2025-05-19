@@ -10,6 +10,7 @@ import com.example.base.enums.ErrorType;
 import com.example.base.enums.TermType;
 import com.example.base.exception.CommonException;
 import com.example.base.repository.TermsRepository;
+import jakarta.persistence.EntityExistsException;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -37,19 +38,19 @@ public class TermService {
   @Transactional
   public void updateTerm(TermType id, Long version, UpdateReqTermDTO req) {
     TermId updateTermId = new TermId(id, version + 1);
-    Terms term = termsRepository.findById(new TermId(id, version)).orElseThrow(() -> new CommonException(ErrorType.BAD_REQUEST));
+    termsRepository.findById(new TermId(id, version)).orElseThrow(() -> new CommonException(ErrorType.BAD_REQUEST));
 
-    // 이미 해당컬럼이 버전업 된게 존재할 경우 예외처리
-    if (termsRepository.existsById(updateTermId)) {
-      throw new CommonException(ErrorType.OPTIMISTIC_LOCK_CONFLICT);
-    }
     // 버전업 데이터 insert
     Terms versionUpTerm = Terms.builder().termId(updateTermId)
         .contents(req.contents())
         .required(req.required())
         .effectiveDate(req.effectiveDate()).build();
 
-    termsRepository.save(versionUpTerm);
+    try {
+      termsRepository.save(versionUpTerm);
+    } catch (EntityExistsException e) {
+      throw new CommonException(ErrorType.OPTIMISTIC_LOCK_CONFLICT);
+    }
 
   }
 

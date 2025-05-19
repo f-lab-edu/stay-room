@@ -84,7 +84,7 @@ public class TermsRepositoryCustomImpl implements TermsRepositoryCustom {
   }
 
   @Override
-  public List<Terms> activeTermList() {
+  public List<Terms> activeTermList(Boolean required) {
     QTerms terms = QTerms.terms;
     QTerms termsSub = new QTerms("termsSub");
     BooleanBuilder where = new BooleanBuilder();
@@ -99,6 +99,11 @@ public class TermsRepositoryCustomImpl implements TermsRepositoryCustom {
                     .groupBy(termsSub.termId.id)
             )
     );
+
+    // required 값이 있을 경우 검색 조건에 추가 (필수/선택 약관 별 조회)
+    if (required != null) {
+      where.and(terms.required.eq(required));
+    }
     return queryFactory
         .selectFrom(terms)
         .where(where)

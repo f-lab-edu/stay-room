@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface TermsRepositoryCustom {
   List<Terms> termsSearchByCondition(SearchTermDTO req);
-  List<Terms> activeTermList();
+  List<Terms> activeTermList(Boolean required);
   Terms activeTermInfo(TermType id);
 
 }
