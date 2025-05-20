@@ -49,7 +49,7 @@ public class TermService {
     try {
       termsRepository.save(versionUpTerm);
     } catch (EntityExistsException e) {
-      throw new CommonException(ErrorType.OPTIMISTIC_LOCK_CONFLICT);
+      throw new CommonException(ErrorType.ADMIN_UPDATE_CONFLICT);
     }
 
   }

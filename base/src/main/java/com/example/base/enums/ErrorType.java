@@ -16,13 +16,16 @@ public enum ErrorType {
   INVALID_PASSWORD("100009", HttpStatus.BAD_REQUEST, "유효하지 않은 비밀번호입니다."),
   EMAIL_CONFLICT("100010", HttpStatus.CONFLICT, "이미 사용 중인 이메일입니다."),
   NOT_VERIFY_EMAIL("100011",HttpStatus.BAD_REQUEST,"메일 인증이 유효하지 않습니다. 메일을 재인증해주세요."),
-  REQUIRED_TERMS_NOT_AGREED("100012",HttpStatus.BAD_REQUEST,"필수 약관에 동의하지 않았습니다.");
+  REQUIRED_TERMS_NOT_AGREED("100012",HttpStatus.BAD_REQUEST,"필수 약관에 동의하지 않았습니다."),
+  BAD_REQUSET_VALUE("100013", HttpStatus.BAD_REQUEST,"해당 값이 존재하지 않습니다."),
+  DUPLICATE_VALUE("100014", HttpStatus.BAD_REQUEST,"중복된 값이 있습니다.");
 
   ErrorType(String code, HttpStatus httpStatus, String message) {
     this.code = code;
     this.httpStatus = httpStatus;
     this.message = message;
   }
+
 
   private final String code;
   private final HttpStatus httpStatus;
